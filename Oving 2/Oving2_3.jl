@@ -1,0 +1,71 @@
+#=
+Oving2_3:
+- Julia version: 
+- Author: Olav Milian
+- Date: 2019-09-18
+=#
+
+# Importing the struct beeing used
+# Inside a try-catch to allow it to be defined multiple times
+# (Mostly a workaround for some IDEs, you don't have to care about this)
+try
+    mutable struct NodeDoublyLinked
+        prev::Union{NodeDoublyLinked, Nothing} # Er enten forrige node eller nothing
+        next::Union{NodeDoublyLinked, Nothing} # Er enten neste node eller nothing
+        value::Int # Verdien til noden
+    end
+catch e end
+
+
+
+
+## Du skal implementere denne funksjonen
+function maxofdoublelinkedlist(linkedlist)
+    c_list = linkedlist
+    max = c_list.value
+    while c_list != nothing
+        if c_list.value > max
+            max = c_list.value
+
+        end
+        c_list = c_list.prev
+    end
+    c_list = linkedlist
+    while c_list != nothing
+        if c_list.value > max
+            max = c_list.value
+
+        end
+        c_list = c_list.next
+    end
+    return max
+end
+
+
+
+
+
+### Tests ###
+# Disse testene blir kjør når du kjører filen
+# Du trenger ikke å endre noe her, men du kan eksperimentere!
+
+## Simple doubly linked chain
+# Generated from the tail of the list
+#                     prev     next     value
+n3 = NodeDoublyLinked(nothing, nothing, 100)
+n2 = NodeDoublyLinked(nothing, n3, 10)
+n1 = NodeDoublyLinked(nothing, n2, 1)
+n3.prev = n2
+n2.prev = n1
+
+using Test
+printstyled("\n\n---------------\nKjører tester!!\n---------------\n"; color = :magenta)
+@testset "Basic tests" begin
+    @test maxofdoublelinkedlist(n1) == 100
+    @test maxofdoublelinkedlist(n2) == 100
+    @test maxofdoublelinkedlist(n3) == 100
+end
+
+println("\nFungerte alt? Prøv å kjør koden i inginious!")
+println("Husk at disse testene ikke alltid sjekker alle edge-cases")
+println("---------------------------------------------------------\n\n\n\n")
